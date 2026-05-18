@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug STM32H7A3 (OpenOCD)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            // Chemin vers le fichier ELF généré par votre compilation CMake
+            "executable": "${workspaceRoot}/build/STM32H7A3_Project.elf",
+            "cwd": "${workspaceRoot}",
+            
+            // Configuration spécifique à OpenOCD pour la carte Nucleo H7
+            "configFiles": [
+                "interface/stlink.cfg",
+                "target/stm32h7x.cfg"
+            ],
+            
+            // Indique à Cortex-Debug d'utiliser l'extension série intégrée si besoin
+            "rttConfig": {
+                "enabled": false
+            },
+            
+            // Actions à exécuter après le reset de la carte
+            "postLaunchCommands": [
+                "monitor reset halt",
+                "monitor flash write_image erase ${workspaceRoot}/build/STM32H7A3_Project.elf",
+                "monitor reset init"
+            ],
+            
+            "showDevDebugOutput": "none",
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}
